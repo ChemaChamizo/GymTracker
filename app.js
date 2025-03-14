@@ -23,238 +23,17 @@ const exercises = [
 ];
 
 const quotes = [
-    "La calidad del movimiento es más importante que la cantidad de peso. - NSCA (National Strength and Conditioning Association)",
-    "La sobrecarga progresiva es clave: aumenta gradualmente la intensidad para ganar fuerza. - Principio de Sobrecarga (Zatsiorsky, 1995)",
-    "El rango completo de movimiento mejora la movilidad y el desarrollo muscular. - Schoenfeld, 2010",
-    "No entrenes hasta el fallo en cada serie; optimiza la fatiga para una mejor recuperación. - Helms et al., 2016",
-    "La fuerza se construye en la fase excéntrica: controla la bajada para mejores resultados. - McMahon et al., 2014",
-    "La consistencia supera a la intensidad; el progreso viene con el tiempo. - Ericsson et al., 1993 (Deliberate Practice Theory)",
-    "Entrena la mente como entrenas el cuerpo: la autoconfianza mejora el rendimiento. - Bandura, 1997 (Teoría de la Autoeficacia)",
-    "Visualiza el éxito antes de cada levantamiento: la imagen mental mejora la ejecución. - Feltz & Landers, 1983",
-    "Reformula la fatiga como una señal de crecimiento, no de debilidad. - Noakes, 2012 (Central Governor Theory)",
-    "Cree en tu entrenamiento, confía en el proceso y el progreso llegará. - Carol Dweck, 2006 (Mindset Theory)",
-    "El crecimiento muscular ocurre durante el descanso, no solo en el entrenamiento. - Schoenfeld, 2013",
-    "Duerme al menos 7-9 horas: la falta de sueño reduce fuerza y recuperación. - Fullagar et al., 2015",
-    "La variabilidad en el entrenamiento previene el estancamiento y reduce el riesgo de lesiones. - Periodización Deportiva (Bompa & Haff, 2009)",
-    "La recuperación activa acelera la eliminación del lactato y reduce la fatiga. - Dupont et al., 2004",
-    "La nutrición post-entrenamiento es clave: proteínas y carbohidratos optimizan la recuperación. - Tarnopolsky, 2008"
+    "La calidad del movimiento es más importante que la cantidad de peso. - NSCA",
+    "La sobrecarga progresiva es clave: aumenta gradualmente la intensidad para ganar fuerza.",
+    "El rango completo de movimiento mejora la movilidad y el desarrollo muscular.",
+    "No entrenes hasta el fallo en cada serie; optimiza la fatiga para una mejor recuperación.",
+    "La fuerza se construye en la fase excéntrica: controla la bajada para mejores resultados.",
+    "La consistencia supera a la intensidad; el progreso viene con el tiempo.",
+    "Entrena la mente como entrenas el cuerpo: la autoconfianza mejora el rendimiento.",
+    "Visualiza el éxito antes de cada levantamiento: la imagen mental mejora la ejecución.",
+    "Reformula la fatiga como una señal de crecimiento, no de debilidad.",
+    "Cree en tu entrenamiento, confía en el proceso y el progreso llegará."
 ];
-
-const translations = {
-    en: {
-        title: 'Gainz',
-        newWorkout: 'New Workout',
-        searchExercise: 'Search exercise...',
-        weight: 'kg',
-        reps: 'reps',
-        rpe: 'RPE (1-10)',
-        set: 'Set',
-        addSet: 'Add Set',
-        removeExercise: 'Remove Exercise',
-        sessionNotes: 'Session notes...',
-        saveWorkout: 'Save Workout',
-        workoutHistory: 'Workout History',
-        searchWorkouts: 'Search workouts...',
-        fatigue: 'Fatigue',
-        rm: 'RM',
-        metrics: 'Metrics',
-        maxRM: 'Max RM',
-        averageRM: 'Average RM',
-        totalSets: 'Total Sets',
-        deleteWorkout: 'Delete Workout',
-        confirmDelete: 'Are you sure you want to delete this workout?',
-        editUserName: 'Edit Name',
-        addUser: 'Add User',
-        save: 'Save',
-        cancel: 'Cancel',
-        newUserName: 'New user name'
-    },
-    es: {
-        title: 'Gainz',
-        newWorkout: 'Nuevo Entrenamiento',
-        searchExercise: 'Buscar ejercicio...',
-        weight: 'kg',
-        reps: 'reps',
-        rpe: 'RPE (1-10)',
-        set: 'Serie',
-        addSet: 'Añadir Serie',
-        removeExercise: 'Eliminar Ejercicio',
-        sessionNotes: 'Notas de la sesión...',
-        saveWorkout: 'Guardar Entrenamiento',
-        workoutHistory: 'Historial de Entrenamientos',
-        searchWorkouts: 'Buscar entrenamientos...',
-        fatigue: 'Fatiga',
-        rm: 'RM',
-        metrics: 'Métricas',
-        maxRM: 'RM Máximo',
-        averageRM: 'RM Promedio',
-        totalSets: 'Series Totales',
-        deleteWorkout: 'Eliminar Entrenamiento',
-        confirmDelete: '¿Estás seguro de que quieres eliminar este entrenamiento?',
-        editUserName: 'Editar Nombre',
-        addUser: 'Añadir Usuario',
-        save: 'Guardar',
-        cancel: 'Cancelar',
-        newUserName: 'Nombre de nuevo usuario'
-    },
-    it: {
-        title: 'Gainz',
-        newWorkout: 'Nuovo Allenamento',
-        searchExercise: 'Cerca esercizio...',
-        weight: 'kg',
-        reps: 'ripetizioni',
-        rpe: 'RPE (1-10)',
-        set: 'Serie',
-        addSet: 'Aggiungi Serie',
-        removeExercise: 'Rimuovi Esercizio',
-        sessionNotes: 'Note della sessione...',
-        saveWorkout: 'Salva Allenamento',
-        workoutHistory: 'Cronologia Allenamenti',
-        searchWorkouts: 'Cerca allenamenti...',
-        fatigue: 'Fatica',
-        rm: 'RM',
-        metrics: 'Metriche',
-        maxRM: 'RM Massimo',
-        averageRM: 'RM Medio',
-        totalSets: 'Serie Totali',
-        deleteWorkout: 'Elimina Allenamento',
-        confirmDelete: 'Sei sicuro di voler eliminare questo allenamento?',
-        editUserName: 'Modifica Nome',
-        addUser: 'Aggiungi Utente',
-        save: 'Salva',
-        cancel: 'Annulla',
-        newUserName: 'Nome nuovo utente'
-    },
-    pt: {
-        title: 'Gainz',
-        newWorkout: 'Novo Treino',
-        searchExercise: 'Procurar exercício...',
-        weight: 'kg',
-        reps: 'reps',
-        rpe: 'RPE (1-10)',
-        set: 'Série',
-        addSet: 'Adicionar Série',
-        removeExercise: 'Remover Exercício',
-        sessionNotes: 'Notas da sessão...',
-        saveWorkout: 'Salvar Treino',
-        workoutHistory: 'Histórico de Treinos',
-        searchWorkouts: 'Procurar treinos...',
-        fatigue: 'Fadiga',
-        rm: 'RM',
-        metrics: 'Métricas',
-        maxRM: 'RM Máximo',
-        averageRM: 'RM Médio',
-        totalSets: 'Séries Totais',
-        deleteWorkout: 'Excluir Treino',
-        confirmDelete: 'Tem certeza que deseja excluir este treino?',
-        editUserName: 'Editar Nome',
-        addUser: 'Adicionar Usuário',
-        save: 'Salvar',
-        cancel: 'Cancelar',
-        newUserName: 'Nome do novo usuário'
-    },
-    fr: {
-        title: 'Gainz',
-        newWorkout: 'Nouvel Entraînement',
-        searchExercise: 'Rechercher un exercice...',
-        weight: 'kg',
-        reps: 'répétitions',
-        rpe: 'RPE (1-10)',
-        set: 'Série',
-        addSet: 'Ajouter une Série',
-        removeExercise: 'Supprimer l\'Exercice',
-        sessionNotes: 'Notes de séance...',
-        saveWorkout: 'Sauvegarder l\'Entraînement',
-        workoutHistory: 'Historique des Entraînements',
-        searchWorkouts: 'Rechercher des entraînements...',
-        fatigue: 'Fatigue',
-        rm: 'RM',
-        metrics: 'Métriques',
-        maxRM: 'RM Maximum',
-        averageRM: 'RM Moyen',
-        totalSets: 'Séries Totales',
-        deleteWorkout: 'Supprimer l\'Entraînement',
-        confirmDelete: 'Êtes-vous sûr de vouloir supprimer cet entraînement ?',
-        editUserName: 'Modifier le Nom',
-        addUser: 'Ajouter Utilisateur',
-        save: 'Sauvegarder',
-        cancel: 'Annuler',
-        newUserName: 'Nom du nouvel utilisateur'
-    },
-    de: {
-        title: 'Gainz',
-        newWorkout: 'Neues Training',
-        searchExercise: 'Übung suchen...',
-        weight: 'kg',
-        reps: 'Wiederholungen',
-        rpe: 'RPE (1-10)',
-        set: 'Satz',
-        addSet: 'Satz hinzufügen',
-        removeExercise: 'Übung entfernen',
-        sessionNotes: 'Trainingsnotizen...',
-        saveWorkout: 'Training speichern',
-        workoutHistory: 'Trainingshistorie',
-        searchWorkouts: 'Trainings durchsuchen...',
-        fatigue: 'Ermüdung',
-        rm: 'RM',
-        metrics: 'Metriken',
-        maxRM: 'Max RM',
-        averageRM: 'Durchschnitt RM',
-        totalSets: 'Gesamtsätze',
-        deleteWorkout: 'Training löschen',
-        confirmDelete: 'Sind Sie sicher, dass Sie dieses Training löschen möchten?',
-        editUserName: '!Namen Bearbeiten',
-        addUser: 'Benutzer Hinzufügen',
-        save: 'Speichern',
-        cancel: 'Abbrechen',
-        newUserName: 'Name des neuen Benutzers'
-    }
-};
-
-const exerciseTranslations = {
-    en: {
-        "Shoulder Press": "Shoulder Press",
-        "Bench Press": "Bench Press", 
-        "Skull Crusher": "Skull Crusher",
-        "Dumbbell Bench Press": "Dumbbell Bench Press",
-        "Pull Up": "Pull Up",
-        "Barbell Row": "Barbell Row",
-        "Landmine Row": "Landmine Row", 
-        "Dumbbell Row": "Dumbbell Row",
-        "Back Squat": "Back Squat",
-        "Front Squat": "Front Squat",
-        "Landmine Squat": "Landmine Squat",
-        "Deadlift": "Deadlift",
-        "Romanian Deadlift": "Romanian Deadlift",
-        "Lateral Raises": "Lateral Raises",
-        "Biceps Curl": "Biceps Curl",
-        "Overhead Elbow Extension": "Overhead Elbow Extension",
-        "Heel Elevated Squat": "Heel Elevated Squat",
-        "Incline Bench Press": "Incline Bench Press",
-        "Dumbbell Incline Bench Press": "Dumbbell Incline Bench Press"
-    },
-    es: {
-        "Shoulder Press": "Press de Hombros",
-        "Bench Press": "Press de Banca",
-        "Skull Crusher": "Rompecráneos",
-        "Dumbbell Bench Press": "Press de Banca con Mancuernas",
-        "Pull Up": "Dominadas",
-        "Barbell Row": "Remo con Barra",
-        "Landmine Row": "Remo con Landmine",
-        "Dumbbell Row": "Remo con Mancuernas",
-        "Back Squat": "Sentadilla Trasera",
-        "Front Squat": "Sentadilla Frontal",
-        "Landmine Squat": "Sentadilla con Landmine",
-        "Deadlift": "Peso Muerto",
-        "Romanian Deadlift": "Peso Muerto Rumano",
-        "Lateral Raises": "Elevaciones Laterales",
-        "Biceps Curl": "Curl de Bíceps",
-        "Overhead Elbow Extension": "Extensión de Codo por Encima",
-        "Heel Elevated Squat": "Sentadilla con Talones Elevados",
-        "Incline Bench Press": "Press de Banca Inclinado",
-        "Dumbbell Incline Bench Press": "Press de Banca Inclinado con Mancuernas"
-    }
-}
 
 const app = createApp({
     data() {
@@ -309,7 +88,7 @@ const app = createApp({
                     }
                     
                     exercise.sets.forEach(set => {
-                        const rm = this.calculateRM(set, exercise.fatigeFactor);
+                        const rm = this.calculateRM(set, exercise.fatigeFactor, exercise);
                         metrics[exercise.name].totalSets++;
                         metrics[exercise.name].allRMs.push(rm);
                         metrics[exercise.name].maxRM = Math.max(metrics[exercise.name].maxRM, rm);
@@ -364,7 +143,7 @@ const app = createApp({
         },
         addSet(exercise) {
             const highestRM = Math.max(
-                ...exercise.sets.map(set => this.calculateRM(set, exercise.fatigeFactor)),
+                ...exercise.sets.map(set => this.calculateRM(set, exercise.fatigeFactor, exercise)),
                 0
             );
             
@@ -375,14 +154,25 @@ const app = createApp({
                 highestRM: highestRM  
             });
         },
-        calculateRM(set, fatigeFactor) {
+        calculateRM(set, fatigeFactor, exercise) {
             if (!set.weight || !set.reps || !set.rpe) return 0;
-            return Math.round(set.weight * (1 + (10 - set.rpe) / fatigeFactor));
+
+            // Estimación inicial con Epley
+            let rm = set.weight * (1 + set.reps / 30);
+
+            // Obtener el RPE máximo previo en la sesión para este ejercicio
+            let maxRPE = Math.max(...exercise.sets.map(s => s.rpe), set.rpe);
+
+            // Ajuste de fatiga intra sesión
+            let fatigueAdjustment = 1 - ((maxRPE - set.rpe) / fatigeFactor);
+            fatigueAdjustment = Math.max(0.8, fatigueAdjustment); // Limitar impacto de fatiga (mínimo 80%)
+
+            return Math.round(rm * fatigueAdjustment);
         },
         calculateFatigue(set, exercise) {
-            const currentRM = this.calculateRM(set, exercise.fatigeFactor);
+            const currentRM = this.calculateRM(set, exercise.fatigeFactor, exercise);
             const highestRM = Math.max(
-                ...exercise.sets.map(s => this.calculateRM(s, exercise.fatigeFactor))
+                ...exercise.sets.map(s => this.calculateRM(s, exercise.fatigeFactor, exercise))
             );
             
             if (highestRM === 0 || currentRM === highestRM) return 0;
@@ -481,7 +271,7 @@ const app = createApp({
                                 weight: set.weight,
                                 reps: set.reps,
                                 rpe: set.rpe,
-                                rm: this.calculateRM(set, ex.fatigeFactor)
+                                rm: this.calculateRM(set, ex.fatigeFactor, ex)
                             });
                         });
                     }
