@@ -1,193 +1,107 @@
-<html lang="en">
+<!DOCTYPE html>
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gainz</title>
+    <title>Gym Tracker</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@1.0.1/dist/chartjs-adapter-moment.min.js"></script>
-    <script type="importmap">
-    {
-        "imports": {
-            "vue": "https://unpkg.com/vue@3/dist/vue.esm-browser.js"
-        }
-    }
-    </script>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="app.js" defer></script>
 </head>
 <body>
     <div id="app">
-        <div class="language-selector">
-            <select v-model="currentLanguage" @change="changeLanguage(currentLanguage)">
-                <option value="en">English</option>
-                <option value="es">Español</option>
-                <option value="it">Italiano</option>
-                <option value="pt">Português</option>
-                <option value="fr">Français</option>
-                <option value="de">Deutsch</option>
-            </select>
-        </div>
-
         <header>
-            <img src="freepik__gainz_logo.png" alt="Gainz Logo" class="logo">
+            <h1>Gym Tracker</h1>
         </header>
-
-        <div class="quote-container">
-            <p :class="['quote', { visible: isQuoteVisible }]">{{ quotes[currentQuoteIndex] }}</p>
-        </div>
-
-        <div class="user-selector">
-            <h3 v-if="!isEditingUser">{{ currentUser }}</h3>
-            <div v-if="isEditingUser" class="edit-user-actions">
-                <input type="text" v-model="newUserName" :placeholder="t('newUserName')">
-                <button @click="saveUserEdit">{{ t('save') }}</button>
-                <button @click="cancelEditUser" class="remove-btn">{{ t('cancel') }}</button>
-            </div>
-            <button v-if="!isEditingUser" @click="startEditUser">{{ t('editUserName') }}</button>
-            
-            <select v-model="currentUser" @change="switchUser(currentUser)">
-                <option v-for="user in users" :key="user" :value="user">{{ user }}</option>
-            </select>
-            
-            <div class="new-user-form">
-                <input type="text" v-model="newUserName" :placeholder="t('newUserName')">
-                <button @click="addNewUser">{{ t('addUser') }}</button>
-            </div>
-        </div>
-
+        
         <main>
-            <div class="nav-tabs">
-                <button 
-                    @click="setActiveSection('workout')" 
-                    :class="['nav-tab', activeSection === 'workout' ? 'active' : '']">
-                    {{ t('newWorkout') }}
-                </button>
-                <button 
-                    @click="setActiveSection('history')" 
-                    :class="['nav-tab', activeSection === 'history' ? 'active' : '']">
-                    {{ t('workoutHistory') }}
-                </button>
-                <button 
-                    @click="setActiveSection('metrics')" 
-                    :class="['nav-tab', activeSection === 'metrics' ? 'active' : '']">
-                    {{ t('metrics') }}
-                </button>
-            </div>
+            <section v-if="activeSection === 'workout'">
+                <h2>Entrenamiento Actual</h2>
+                <input v-model="searchExercise" placeholder="Buscar ejercicio" @input="filterExercises">
+                <ul>
+                    <li v-for="exercise in filteredExercises" :key="exercise.name" @click="addExercise(exercise)">
+                        {{ exercise.displayName }}
+                    </li>
+                </ul>
+                <div v-for="(exercise, exerciseIndex) in currentWorkout.exercises" :key="exerciseIndex">
+                    <h3>{{ exercise.displayName }}</h3>
+                    <div v-for="(set, setIndex) in exercise.sets" :key="set.id">
+                        <span>{{ set.weight }} kg x {{ set.reps }} reps</span>
+                        <button @click="removeSet(exercise, set.id)">Eliminar</button>
+                    </div>
+                    <button @click="addSet(exercise)">Añadir Serie</button>
+                    <button @click="removeExercise(exerciseIndex)">Eliminar Ejercicio</button>
+                </div>
+                <button @click="saveWorkout">Guardar Entrenamiento</button>
+            </section>
 
-            <section :class="['section', activeSection === 'workout' ? 'active' : '']">
-                <h2>{{ t('newWorkout') }}</h2>
-                <div class="workout-form">
-                    <input type="date" v-model="currentWorkout.date">
-                    
-                    <div class="exercise-selector">
-                        <input type="text" 
-                               v-model="searchExercise" 
-                               :placeholder="t('searchExercise')"
-                               @input="filterExercises">
-                        <ul class="exercise-list" v-if="filteredExercises.length">
-                            <li v-for="exercise in filteredExercises" 
-                                :key="exercise.name"
-                                @click="addExercise(exercise)">
-                                {{ getExerciseTranslation(exercise.name) }}
+            <section v-if="activeSection === 'history'">
+                <h2>Historial de Entrenamientos</h2>
+                <input v-model="searchHistory" placeholder="Buscar en el historial">
+                <ul>
+                    <li v-for="(workout, index) in filteredWorkouts" :key="index">
+                        <h3>{{ workout.date }}</h3>
+                        <ul>
+                            <li v-for="exercise in workout.exercises" :key="exercise.name">
+                                {{ exercise.displayName }}
+                                <ul>
+                                    <li v-for="set in exercise.sets" :key="set.id">
+                                        {{ set.weight }} kg x {{ set.reps }} reps
+                                    </li>
+                                </ul>
                             </li>
                         </ul>
-                    </div>
-
-                    <div class="selected-exercises">
-                        <div v-for="(exercise, index) in currentWorkout.exercises" 
-                             :key="exercise.name + index"
-                             class="exercise-entry">
-                            <h3>{{ getExerciseTranslation(exercise.name) }}</h3>
-                            <div class="sets">
-                                <div v-for="(set, setIndex) in exercise.sets" 
-                                     :key="setIndex"
-                                     class="set-entry">
-                                    <span>{{ t('set') }} {{ setIndex + 1 }}</span>
-                                    <div class="input-group">
-                                        <input type="number" v-model="set.weight" placeholder="Weight">
-                                        <span class="input-helper">{{ t('weight') }}</span>
-                                    </div>
-                                    <div class="input-group">
-                                        <input type="number" v-model="set.reps" placeholder="Reps">
-                                        <span class="input-helper">{{ t('reps') }}</span>
-                                    </div>
-                                    <div class="input-group">
-                                        <input type="number" v-model="set.rpe" placeholder="RPE" min="1" max="10">
-                                        <span class="input-helper">{{ t('rpe') }}</span>
-                                    </div>
-                                    <span>{{ t('rm') }}: {{ calculateRM(set, exercise.fatigeFactor) }}{{ t('weight') }}</span>
-                                    <span class="fatigue-indicator">
-                                        {{ t('fatigue') }}: {{ calculateFatigue(set, exercise) }}%
-                                    </span>
-                                </div>
-                                <button @click="addSet(exercise)">{{ t('addSet') }}</button>
-                            </div>
-                            <button @click="removeExercise(index)" class="remove-btn">{{ t('removeExercise') }}</button>
-                        </div>
-                    </div>
-
-                    <textarea v-model="currentWorkout.notes" :placeholder="t('sessionNotes')" style="width: 100%; margin-bottom: 10px; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-family: inherit; font-size: 1em;"></textarea>
-
-                    <button @click="saveWorkout" class="save-btn">{{ t('saveWorkout') }}</button>
-                </div>
+                        <button @click="deleteWorkout(index)">Eliminar Entrenamiento</button>
+                    </li>
+                </ul>
             </section>
 
-            <section :class="['section', activeSection === 'history' ? 'active' : '']">
-                <h2>{{ t('workoutHistory') }}</h2>
-                <input type="text" 
-                       v-model="searchHistory" 
-                       :placeholder="t('searchWorkouts')">
-                <div class="history-entries">
-                    <div v-for="(workout, index) in filteredWorkouts" 
-                         :key="workout.date + index"
-                         class="workout-entry">
-                        <button @click="deleteWorkout(index)" class="delete-workout-btn">
-                            {{ t('deleteWorkout') }}
-                        </button>
-                        <h3>{{ workout.date }}</h3>
-                        <p v-if="workout.notes">{{ workout.notes }}</p>
-                        <div v-for="exercise in workout.exercises"
-                             :key="exercise.name">
-                            <h4>{{ getExerciseTranslation(exercise.name) }}</h4>
-                            <div v-for="(set, setIndex) in exercise.sets"
-                                 :key="setIndex">
-                                {{ t('set') }} {{ setIndex + 1 }} {{ t('set') }} {{ set.weight }}{{ t('weight') }} x {{ set.reps }} {{ t('reps') }} @{{ t('rpe') }} {{ set.rpe }}
-                                ({{ t('rm') }}: {{ calculateRM(set, exercise.fatigeFactor) }}{{ t('weight') }})
-                                ({{ t('fatige') }}: {{ calculateFatige(set, exercise) }}%)
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <section v-if="activeSection === 'metrics'">
+                <h2>Métricas de Ejercicios</h2>
+                <input v-model="searchMetrics" placeholder="Buscar métricas">
+                <ul>
+                    <li v-for="metric in exerciseMetrics" :key="metric.name">
+                        <h3>{{ metric.name }}</h3>
+                        <p>Máximo RM: {{ metric.maxRM }}</p>
+                        <p>Series Totales: {{ metric.totalSets }}</p>
+                        <p>RM Promedio: {{ metric.averageRM }}</p>
+                    </li>
+                </ul>
             </section>
 
-            <section :class="['section', activeSection === 'metrics' ? 'active' : '']">
-                <h2>{{ t('metrics') }}</h2>
-                <input type="text" 
-                       v-model="searchMetrics" 
-                       :placeholder="t('searchExercise')">
-                <div class="metrics-grid">
-                    <div v-for="metric in exerciseMetrics" 
-                         :key="metric.name"
-                         class="metric-card">
-                        <h3>{{ getExerciseTranslation(metric.name) }}</h3>
-                        <div>
-                            <div class="metric-value">{{ metric.maxRM }}{{ t('weight') }}</div>
-                            <div class="metric-label">{{ t('maxRM') }}</div>
-                        </div>
-                        <div>
-                            <div class="metric-value">{{ metric.averageRM }}{{ t('weight') }}</div>
-                            <div class="metric-label">{{ t('averageRM') }}</div>
-                        </div>
-                        <div>
-                            <div class="metric-value">{{ metric.totalSets }}</div>
-                            <div class="metric-label">{{ t('totalSets') }}</div>
-                        </div>
-                        <button @click="downloadExerciseData(metric)" class="download-btn">Download Data</button>
-                    </div>
+            <section v-if="activeSection === 'settings'">
+                <h2>Ajustes</h2>
+                <div>
+                    <label for="language">Idioma:</label>
+                    <select id="language" v-model="currentLanguage" @change="changeLanguage(currentLanguage)">
+                        <option value="en">Inglés</option>
+                        <option value="es">Español</option>
+                    </select>
+                </div>
+                <div>
+                    <h3>Usuarios</h3>
+                    <ul>
+                        <li v-for="user in users" :key="user" @click="switchUser(user)">
+                            {{ user }}
+                        </li>
+                    </ul>
+                    <input v-model="newUserName" placeholder="Nuevo nombre de usuario" v-if="isEditingUser">
+                    <button @click="addNewUser" v-if="!isEditingUser">Añadir Usuario</button>
+                    <button @click="startEditUser" v-if="!isEditingUser">Editar Usuario</button>
+                    <button @click="saveUserEdit" v-if="isEditingUser">Guardar</button>
+                    <button @click="cancelEditUser" v-if="isEditingUser">Cancelar</button>
                 </div>
             </section>
         </main>
+
+        <footer>
+            <nav>
+                <button @click="setActiveSection('workout')">Entrenamiento</button>
+                <button @click="setActiveSection('history')">Historial</button>
+                <button @click="setActiveSection('metrics')">Métricas</button>
+                <button @click="setActiveSection('settings')">Ajustes</button>
+            </nav>
+        </footer>
     </div>
-    <script type="module" src="app.js"></script>
 </body>
 </html>
