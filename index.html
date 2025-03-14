@@ -152,8 +152,8 @@
                             <div v-for="(set, setIndex) in exercise.sets"
                                  :key="setIndex">
                                 {{ t('set') }} {{ setIndex + 1 }} {{ t('set') }} {{ set.weight }}{{ t('weight') }} x {{ set.reps }} {{ t('reps') }} @{{ t('rpe') }} {{ set.rpe }}
-                                ({{ t('rm') }}: {{ calculateRM(set, exercise.fatigueFactor) }}{{ t('weight') }})
-                                ({{ t('fatigue') }}: {{ calculateFatigue(set, exercise) }}%)
+                                ({{ t('rm') }}: {{ calculateRM(set, exercise.fatigeFactor) }}{{ t('weight') }})
+                                ({{ t('fatige') }}: {{ calculateFatige(set, exercise) }}%)
                             </div>
                         </div>
                     </div>
